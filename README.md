@@ -8,6 +8,10 @@ copy test dag python file into pod
 
 .\oc rsync "localpath" airflow-worker-7df84f7cf-wzskc:/opt/airflow/dags/scheduler/
 
+
+![okd-deployments](https://user-images.githubusercontent.com/6337752/169412691-754139fb-800f-4682-991d-afac46de83be.png)
+
+
 ![DAGs](https://user-images.githubusercontent.com/6337752/169412504-693f472a-0c71-48c3-9939-e3f10cc09a41.png)
 
 
