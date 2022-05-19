@@ -1,0 +1,4 @@
+Connection id   : db_sqlite
+Connection Type : Sqlite
+Description     : tmp_sqlite
+Host            : /opt/airflow/ersin.db

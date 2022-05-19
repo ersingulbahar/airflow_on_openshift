@@ -1,0 +1,92 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: airflow-webserver
+  namespace: ersin-poc 
+labels:
+  deployment: airflow-webserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: airflow-webserver
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        deployment: airflow-webserver
+    spec: 
+      volumes:
+        - name: airflow-cfg
+          configMap:
+            name: airflow-cfg
+            defaultMode: 511
+        - name: generic-webserver
+          persistentVolumeClaim:
+            claimName: generic-webserver
+        - name: empty1
+          emptyDir: {}
+      containers:
+        - resources:
+            limits:
+              memory: 2Gi
+            requests:
+              memory: 2Gi
+          name: airflow-webserver
+          env:
+            - name: AIRFLOW_HOME
+              value: /opt/airflow
+            - name: USER
+              value: "${AIRFLOW_UID:-1000}:${AIRFLOW_GID:-0}"
+            - name: AIRFLOW_FERNET_KEY
+              value: '46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho='
+            - name: AIRFLOW_SECRET_KEY
+              value: 'a25mQ1FHTUh3MnFRSk5KMEIyVVU2YmN0VGRyYTVXY08='
+            - name: AIRFLOW_EXECUTOR
+              value: 'CeleryExecutor'
+            - name: AIRFLOW_LOAD_EXAMPLES
+              value: 'yes'
+            - name: AIRFLOW_EMAIL
+              value: 'user@example.com'
+            - name: REDIS_HOST
+              value: 'airflow-redis'
+            - name: REDIS_PORT_NUMBER
+              value: '6379'
+            - name: AIRFLOW_DATABASE_NAME
+              value: 'bitnami_airflow'
+            - name: AIRFLOW_DATABASE_USERNAME
+              value: 'bn_airflow'
+            - name: AIRFLOW_DATABASE_PASSWORD
+              value: 'bitnami1'
+            - name: AIRFLOW_LOAD_EXAMPLES
+              value: 'yes'
+            - name: AIRFLOW_PASSWORD
+              value: 'bitnami123'
+            - name: AIRFLOW_USERNAME
+              value: 'user'
+            - name: AIRFLOW_DATABASE_HOST
+              value: 'airflow-database'
+            - name: AIRFLOW_DATABASE_PORT_NUMBER
+              value: '5432'
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: empty1
+              mountPath: /opt/airflow
+            - name: generic-webserver
+              mountPath: /opt/airflow/logs/
+            - name: generic-webserver
+              mountPath: /opt/airflow/dags/
+            - name: airflow-cfg
+              mountPath: /opt/airflow/airflow.cfg
+              subPath: airflow.cfg
+          image: >-
+            apache/airflow:2.3.0
+          args:
+            - >-
+              airflow db upgrade;airflow db init;airflow users create -e ersin@airflow.com -f ersin -l gulbahar -p 123456 -r Admin -u ersingulbahar; airflow webserver ;
+          command:
+            - bash
+            - '-c'
+          hostname: airflow-webserver

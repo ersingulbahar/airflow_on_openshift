@@ -1,0 +1,44 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: airflow-database
+  namespace: ersin-poc 
+labels:
+  deployment: airflow-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: airflow-database
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        deployment: airflow-database
+    spec:
+      volumes:
+        - name: generic-database
+          persistentVolumeClaim:
+            claimName: generic-database
+        - name: empty1
+          emptyDir: {}
+      containers:
+        - resources: {}
+          name: airflow-database
+          env:
+            - name: POSTGRESQL_USERNAME
+              value: 'bn_airflow'
+            - name: POSTGRESQL_PASSWORD
+              value: 'bitnami1'
+            - name: POSTGRESQL_DATABASE
+              value: 'bitnami_airflow'
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          volumeMounts:
+            - name: generic-database
+              mountPath: /bitnami/postgresql/
+          image: >-
+            bitnami/postgresql:latest
+          hostname: airflow-database  
+          

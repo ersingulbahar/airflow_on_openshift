@@ -1,0 +1,19 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: airflow-database
+  namespace: ersin-poc
+spec:
+  ports:
+    - name: 5432-tcp
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+  selector:
+    deployment: airflow-database
+  type: ClusterIP
+  sessionAffinity: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack    
+  

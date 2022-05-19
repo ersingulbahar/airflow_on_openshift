@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: airflow-worker
+  namespace: ersin-poc
+spec:
+  ports:
+    - name: 8793-tcp
+      protocol: TCP
+      port: 8793
+      targetPort: 8793
+  selector:
+    deployment: airflow-worker
+  type: ClusterIP
+  sessionAffinity: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack   

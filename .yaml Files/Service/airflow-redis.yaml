@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: airflow-redis
+  namespace: ersin-poc
+spec:
+  ports:
+    - name: 6379-tcp
+      protocol: TCP
+      port: 6379
+      targetPort: 6379
+  selector:
+    deployment: airflow-redis
+  type: ClusterIP
+  sessionAffinity: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack 

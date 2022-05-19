@@ -1,0 +1,4 @@
+Connection id   : db_sqlite
+Connection Type : HTTP
+Description     : is_api_alive
+Host            : http://randomuser.me/

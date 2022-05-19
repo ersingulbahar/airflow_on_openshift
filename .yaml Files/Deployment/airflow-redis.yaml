@@ -1,0 +1,39 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: airflow-redis
+  namespace: ersin-poc 
+labels:
+  deployment: airflow-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: airflow-redis
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        deployment: airflow-redis
+    spec:
+      volumes:
+        - name: generic-redis
+          persistentVolumeClaim:
+            claimName: generic-redis
+        - name: empty1
+          emptyDir: {}
+      containers:
+        - resources: {}
+          name: airflow-redis
+          env:
+            - name: ALLOW_EMPTY_PASSWORD
+              value: 'yes'
+          ports:
+            - containerPort: 6379
+              protocol: TCP
+          volumeMounts:
+            - name: generic-redis
+              mountPath: /bitnami/
+          image: >-
+            bitnami/redis:latest
+          hostname: airflow-redis   

@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: airflow-webserver
+  namespace: ersin-poc
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    deployment: airflow-webserver
+  type: ClusterIP
+  sessionAffinity: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack

@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: airflow-webserver
+  namespace: ersin-poc
+  selfLink: /apis/route.openshift.io/v1/namespaces/ersin-poc/routes/airflow-webserver
+spec:
+  host: airflow-webserver-ersin-poc.192.168.1.21.nip.io
+  port:
+    targetPort: 8080-tcp
+  to:
+    kind: Service
+    name: airflow-webserver
+    weight: 100
+  wildcardPolicy: None
