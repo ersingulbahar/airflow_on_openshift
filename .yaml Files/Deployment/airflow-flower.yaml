@@ -21,9 +21,9 @@ spec:
             claimName: generic-flower
         - name: empty1
           emptyDir: {}
-        - name: airflow-cfg-scheduler
+        - name: airflow-cfg-flower
           configMap:
-            name: airflow-cfg-scheduler
+            name: airflow-cfg-flower
             defaultMode: 511
       containers:
         - resources: {}
@@ -67,7 +67,7 @@ spec:
               mountPath: /opt/airflow/logs/
             - name: generic-flower
               mountPath: /opt/airflow/dags/
-            - name: airflow-cfg-scheduler
+            - name: airflow-cfg-flower
               mountPath: /opt/airflow/airflow.cfg
               subPath: airflow.cfg
           args:
